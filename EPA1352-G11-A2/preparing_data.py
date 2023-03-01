@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 link_roads = './data/_roads3.csv'
 link_bridges = './data/BMMS_overview.xlsx'
@@ -41,6 +43,10 @@ bridge_types = ['Culvert', 'Bridge'] # in doubt over: CrossRoad, RailRoadCrossin
 for i in bridge_types:
     df_roadN1.loc[df_roadN1['type'].str.contains(i), 'type'] = 'bridge'
 
+for i in df_roadN1.type:
+    df_roadN1.loc[~df_roadN1['type'].str.contains('bridge'), 'type'] = 'road'
+
+
 print(df_roadN1.type.unique())
 
 # find exact match between road+LRP
@@ -61,3 +67,9 @@ df_roadN1_bridges = df_roadN1[df_roadN1['type'] == 'bridge']
 print(df_roadN1_bridges[['road_id', 'type', 'bridge_condition', 'bridge_length']].head(5))
 print(df_roadN1_bridges.isnull().sum())
 df_roadN1.to_excel('check_N1_df.xlsx')
+
+# make a figure of N1
+sns.lmplot(x='lon', y='lat', data=df_roadN1, hue='type', fit_reg=False, scatter_kws={"s": 10})
+#df_roadN1.plot(x='lon', y='lat', linestyle="",marker="o",legend=False, markersize='0.5')
+#df_roadN1_bridges.plot(x='lon', y='lat', linestyle="",marker="o",legend=False, markersize='0.5', color='orange')
+plt.show()
