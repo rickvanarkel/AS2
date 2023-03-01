@@ -36,12 +36,28 @@ df_roadN1['bridge_condition'] = np.where((df_roadN1['road_id'].astype(str) == df
 df_roadN1['bridge_length'] = np.where((df_roadN1['road_id'] == df_bridges['bridge_id']), df_bridges['length'], np.nan)
 '''
 
+bridge_types = ['Culvert', 'Bridge'] # in doubt over: CrossRoad, RailRoadCrossing
+
+for i in bridge_types:
+    df_roadN1.loc[df_roadN1['type'].str.contains(i), 'type'] = 'bridge'
+
+print(df_roadN1.type.unique())
+
 for index, row in df_roadN1.iterrows():
-    road_id = row['road_id']
-    matching_bridge = df_bridges[df_bridges['bridge_id'].str.contains(road_id)]
-    if not matching_bridge.empty:
-        bridge_condition = matching_bridge.iloc[0]['condition']
-        df_roadN1.at[index, 'bridge_condition'] = bridge_condition
+    if 'bridge' in row['type']:
+        road_id = row['road_id']
+        matching_bridge = df_bridges[df_bridges['bridge_id'].str.contains(road_id)]
+        if not matching_bridge.empty:
+            bridge_condition = matching_bridge.iloc[0]['condition']
+            bridge_length = matching_bridge.iloc[0]['length']
+            df_roadN1.at[index, 'bridge_condition'] = bridge_condition
+            df_roadN1.at[index, 'bridge_length'] = bridge_length
 
+#print(df_roadN1[['road_id', 'type', 'bridge_condition', 'bridge_length']].head(5))
 
-print(df_roadN1[['road_id', 'type', 'bridge_condition']].head(5))
+df_roadN1_bridges = df_roadN1[df_roadN1['type'] == 'bridge']
+print(df_roadN1_bridges[['road_id', 'type', 'bridge_condition', 'bridge_length']].head(5))
+
+print(df_roadN1_bridges.isnull().sum())
+
+df_roadN1.to_excel('check_N1_df.xlsx')
