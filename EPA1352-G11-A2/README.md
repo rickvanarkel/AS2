@@ -2,11 +2,13 @@
 
 Created by: EPA1352 Group xx 
 
-| Name    | Student Number |
-|:-------:|:--------|
-| Mary White  | 1234567 | 
-| David Brown | 7654321 |
-
+|      Name      | Student Number |
+|:--------------:|:---------------|
+| Rick van Arkel | 4974859        | 
+|  Laura Drost   | 5066034        |
+|   Inge Faber   | 4457617        |
+| Daan de Jager  | 4702972        |
+| Susan Ruinaard | 4650441        |
 
 ## Introduction
 
