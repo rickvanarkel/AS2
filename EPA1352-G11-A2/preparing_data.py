@@ -53,6 +53,8 @@ for index, row in df_roadN1.iterrows():
             df_roadN1.at[index, 'bridge_condition'] = bridge_condition
             df_roadN1.at[index, 'bridge_length'] = bridge_length
 
+for df_bridges.bridge_id in
+
 #print(df_roadN1[['road_id', 'type', 'bridge_condition', 'bridge_length']].head(5))
 
 df_roadN1_bridges = df_roadN1[df_roadN1['type'] == 'bridge']
