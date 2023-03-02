@@ -47,12 +47,12 @@ def change_type():
     df_roadN1.rename(columns={'type': 'model_type'}, inplace=True)
 
 change_type()
-print(df_roadN1['type'])
-print(df_roadN1.type.unique())
+print(df_roadN1['model_type'])
+print(df_roadN1.model_type.unique())
 
 # find exact match between road+LRP
 for index, row in df_roadN1.iterrows():
-    if 'bridge' in row['type']:
+    if 'bridge' in row['model_type']:
         road_id = row['road_id']
         matching_bridge = df_bridges[df_bridges['bridge_id'].str.contains(road_id)]
         if not matching_bridge.empty:
@@ -64,13 +64,13 @@ for index, row in df_roadN1.iterrows():
 # find less exact match between road+LRP (or another way, sustain it, what will work?)
 # what do we need to do with chainage?
 
-df_roadN1_bridges = df_roadN1[df_roadN1['type'] == 'bridge']
-print(df_roadN1_bridges[['road_id', 'type', 'bridge_condition', 'bridge_length']].head(5))
+df_roadN1_bridges = df_roadN1[df_roadN1['model_type'] == 'bridge']
+print(df_roadN1_bridges[['road_id', 'model_type', 'bridge_condition', 'bridge_length']].head(5))
 print(df_roadN1_bridges.isnull().sum())
 df_roadN1.to_excel('check_N1_df.xlsx')
 
 # make a figure of N1
-sns.lmplot(x='lon', y='lat', data=df_roadN1, hue='type', fit_reg=False, scatter_kws={"s": 10})
+sns.lmplot(x='lon', y='lat', data=df_roadN1, hue='model_type', fit_reg=False, scatter_kws={"s": 10})
 #df_roadN1.plot(x='lon', y='lat', linestyle="",marker="o",legend=False, markersize='0.5')
 #df_roadN1_bridges.plot(x='lon', y='lat', linestyle="",marker="o",legend=False, markersize='0.5', color='orange')
 plt.show()
