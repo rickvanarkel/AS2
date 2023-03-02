@@ -1,5 +1,5 @@
 """
-This file is the main run file of our file stru
+This file is the main run file of our model
 """
 import pandas as pd
 import numpy as np
