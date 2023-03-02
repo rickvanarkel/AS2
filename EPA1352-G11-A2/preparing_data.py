@@ -1,3 +1,5 @@
+from G11_A2_run import df_roads, df_bridges
+
 print(df_roads.head(5))
 
 # Check the column names. Eventually we want the columns: road,id,model_type,name,lat,lon,length + bridge info
