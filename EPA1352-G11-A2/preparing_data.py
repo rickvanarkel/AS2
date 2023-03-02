@@ -8,8 +8,8 @@ for i in df_roads:
 df_roadN1 = df_roads[df_roads['road'] == 'N1']
 
 # Check on which types there are in the N1
-print(df_roadN1.type.unique())
-print(df_roadN1.type.nunique())
+#print(df_roadN1.type.unique())
+#print(df_roadN1.type.nunique())
 
 def change_column_names():
     """
@@ -39,8 +39,8 @@ def change_model_type():
     df_roadN1['model_type'].iloc[-1] = 'sink'
 
     # Some checks
-    print(df_roadN1['model_type'])
-    print(df_roadN1.model_type.unique())
+    #print(df_roadN1['model_type'])
+    #print(df_roadN1.model_type.unique())
 
 def connect_infra():
     """
@@ -65,8 +65,8 @@ def connect_infra():
     # what do we need to do with chainage?
 
     df_roadN1_bridges = df_roadN1[df_roadN1['model_type'] == 'bridge']
-    print(df_roadN1_bridges[['road_id', 'model_type', 'bridge_condition', 'bridge_length']].head(5))
-    print(df_roadN1_bridges.isnull().sum())
+    #print(df_roadN1_bridges[['road_id', 'model_type', 'bridge_condition', 'bridge_length']].head(5))
+    #print(df_roadN1_bridges.isnull().sum())
     df_roadN1.to_excel('check_N1_df.xlsx')
 
 def make_figure():
