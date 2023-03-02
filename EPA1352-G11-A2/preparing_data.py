@@ -17,12 +17,14 @@ def change_column_names():
     """
     The column names are updated and empty columns are generated for new information
     """
-    df_roadN1.rename(columns={'type': 'model_type'}, inplace=True)
+    #df_roadN1.rename(columns={'type': 'model_type'}, inplace=True)
+    df_roadN1['model_type'] = ''
     df_roadN1['length'] = np.nan
     df_roadN1['id'] = ''
     df_roadN1['name'] = ''
     df_roadN1['condition'] = ''
     df_roadN1['road_name'] = 'Unknown'
+    df_roadN1['bridge_length'] = np.nan
 
 def change_model_type():
     """
@@ -33,7 +35,7 @@ def change_model_type():
     bridge_types = ['Bridge'] # in doubt over: CrossRoad, RailRoadCrossing, Culvert
 
     for i in bridge_types:
-        df_roadN1.loc[df_roadN1['model_type'].str.contains(i), 'model_type'] = 'bridge'
+        df_roadN1.loc[df_roadN1['type'].str.contains(i), 'model_type'] = 'bridge'
 
     df_roadN1.loc[~df_roadN1['model_type'].str.contains('bridge'), 'model_type'] = 'road'
 
@@ -61,7 +63,7 @@ def connect_infra():
                 bridge_condition = matching_bridge.iloc[0]['condition']
                 bridge_length = matching_bridge.iloc[0]['length']
                 df_roadN1.at[index, 'condition'] = bridge_condition
-                df_roadN1.at[index, 'length'] = bridge_length
+                df_roadN1.at[index, 'bridge_length'] = bridge_length
 
     # find less exact match between road+LRP (or another way, sustain it, what will work?)
     # what do we need to do with chainage?
@@ -72,7 +74,8 @@ def connect_infra():
 
 
 def get_length():
-    pass
+    df_roadN1['length'] = abs(df_roadN1['chainage'].astype(float).diff()) * 1000
+    df_roadN1['length'][0] = 0
 
 def get_name():
     df_roadN1['name'] = df_roadN1['model_type']
@@ -97,6 +100,7 @@ def prepare_data():
     change_column_names()
     change_model_type()
     connect_infra()
+    # Delete sideroads?
     get_length()
     get_name()
     get_road_name()
@@ -109,3 +113,4 @@ for i in df_roadN1:
     print(i)
 
 df_roadN1.to_excel('check_N1_df.xlsx')
+df_roadN1.to_csv('./data/demo_N1.csv')
