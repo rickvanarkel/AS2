@@ -1,16 +1,3 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-import warnings
-warnings.filterwarnings('ignore')
-
-link_roads = './data/_roads3.csv'
-link_bridges = './data/BMMS_overview.xlsx'
-
-df_roads = pd.read_csv(link_roads)
-df_bridges = pd.read_excel(link_bridges)
-
 print(df_roads.head(5))
 
 # Check the column names. Eventually we want the columns: road,id,model_type,name,lat,lon,length + bridge info
