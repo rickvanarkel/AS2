@@ -56,8 +56,14 @@ class Bridge(Infra):
 
         self.condition = condition
 
-        # TODO
-        self.delay_time = self.random.randrange(0, 10)
+        if self.length < 10:
+            self.delay_time = self.random.uniform(10, 20)
+        elif 10 < self.length < 50:
+            self.delay_time = self.random.uniform(15, 60)
+        elif 50 < self.length < 200:
+            self.delay_time = self.random.uniform(45, 90)
+        elif self.length > 200:
+            self.delay_time = self.random.triangular(60, 120, 240)
         # print(self.delay_time)
 
     # TODO
