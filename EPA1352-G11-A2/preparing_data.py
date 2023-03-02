@@ -26,18 +26,12 @@ print(df_roadN1.type.nunique())
 df_roadN1['road_id'] = df_roadN1['road'] + df_roadN1['lrp']
 df_bridges['bridge_id'] = df_bridges['road'] + df_bridges['LRPName']
 
-# Reset index
-df_roadN1 = df_roadN1.reset_index(drop=True)
-df_bridges = df_bridges.reset_index(drop=True)
-df_roadN1['road_id'] = df_roadN1['road_id'].astype(str)
-df_bridges['bridge_id'] = df_bridges['bridge_id'].astype(str)
-
 def change_type():
     """
     This function checks if the road object is a bridge and replaces it with 'bridge'
     Thereby replaces all other objects in 'link'
     The first and last object are 'source' and 'sink'
-    The column name gets changes to model_type
+    The column name is changed to model_type
     """
     bridge_types = ['Culvert', 'Bridge'] # in doubt over: CrossRoad, RailRoadCrossing
 
@@ -54,8 +48,6 @@ def change_type():
 
 change_type()
 print(df_roadN1['type'])
-
-
 print(df_roadN1.type.unique())
 
 # find exact match between road+LRP
