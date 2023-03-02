@@ -164,5 +164,7 @@ class BangladeshModel(Model):
         """
         self.schedule.step()
 
+df = pd.read_csv('../data/demo-1.csv')
+print(df)
 
 # EOF -----------------------------------------------------------
