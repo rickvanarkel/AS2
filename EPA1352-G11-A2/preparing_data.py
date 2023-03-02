@@ -1,5 +1,6 @@
-from G11_A2_run import df_roads, df_bridges
+"""
 
+"""
 print(df_roads.head(5))
 
 # Check the column names. Eventually we want the columns: road,id,model_type,name,lat,lon,length + bridge info
@@ -8,10 +9,6 @@ for i in df_roads:
 
 # Filter on road N1
 df_roadN1 = df_roads[df_roads['road'] == 'N1']
-
-# Check on which types there are in the N1
-#print(df_roadN1.type.unique())
-#print(df_roadN1.type.nunique())
 
 def change_column_names():
     """

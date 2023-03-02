@@ -1,3 +1,6 @@
+"""
+This file is the main run file of our file stru
+"""
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
