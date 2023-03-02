@@ -32,19 +32,28 @@ df_bridges = df_bridges.reset_index(drop=True)
 df_roadN1['road_id'] = df_roadN1['road_id'].astype(str)
 df_bridges['bridge_id'] = df_bridges['bridge_id'].astype(str)
 
-'''
-# Connect bridge condition from df_bridges to obtain bridge condition and length into the df
-df_roadN1['bridge_condition'] = np.where((df_roadN1['road_id'].astype(str) == df_bridges['bridge_id'].astype(str)), df_bridges['condition'], np.nan)
-df_roadN1['bridge_length'] = np.where((df_roadN1['road_id'] == df_bridges['bridge_id']), df_bridges['length'], np.nan)
-'''
+def change_type():
+    """
+    This function checks if the road object is a bridge and replaces it with 'bridge'
+    Thereby replaces all other objects in 'link'
+    The first and last object are 'source' and 'sink'
+    The column name gets changes to model_type
+    """
+    bridge_types = ['Culvert', 'Bridge'] # in doubt over: CrossRoad, RailRoadCrossing
 
-bridge_types = ['Culvert', 'Bridge'] # in doubt over: CrossRoad, RailRoadCrossing
+    # For model_type, we need the following types: source, sink, sourcesink, bridge, link
+    for i in bridge_types:
+        df_roadN1.loc[df_roadN1['type'].str.contains(i), 'type'] = 'bridge'
 
-for i in bridge_types:
-    df_roadN1.loc[df_roadN1['type'].str.contains(i), 'type'] = 'bridge'
+    df_roadN1.loc[~df_roadN1['type'].str.contains('bridge'), 'type'] = 'link'
 
-for i in df_roadN1.type:
-    df_roadN1.loc[~df_roadN1['type'].str.contains('bridge'), 'type'] = 'road'
+    df_roadN1['type'].iloc[0] = 'source'
+    df_roadN1['type'].iloc[-1] = 'sink'
+
+    df_roadN1.rename(columns={'type': 'model_type'}, inplace=True)
+
+change_type()
+print(df_roadN1['type'])
 
 
 print(df_roadN1.type.unique())
@@ -73,3 +82,4 @@ sns.lmplot(x='lon', y='lat', data=df_roadN1, hue='type', fit_reg=False, scatter_
 #df_roadN1.plot(x='lon', y='lat', linestyle="",marker="o",legend=False, markersize='0.5')
 #df_roadN1_bridges.plot(x='lon', y='lat', linestyle="",marker="o",legend=False, markersize='0.5', color='orange')
 plt.show()
+
