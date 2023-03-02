@@ -32,6 +32,8 @@ def change_column_names():
     df_roadN1['length'] = np.nan
     df_roadN1['id'] = np.nan
     df_roadN1['name'] = ''
+    df_roadN1['condition'] = ''
+    df_roadN1['road_name'] = ''
 
 def change_model_type():
     """
