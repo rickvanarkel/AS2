@@ -67,6 +67,7 @@ class Bridge(Infra):
         # print(self.delay_time)
 
     # TODO
+    ## functie die delay trigered by % van de bruggen van die categorie
     def get_delay_time(self):
         return self.delay_time
 
