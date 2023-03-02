@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import warnings
+warnings.filterwarnings('ignore')
 
 link_roads = './data/_roads3.csv'
 link_bridges = './data/BMMS_overview.xlsx'
@@ -35,16 +37,16 @@ def change_type():
     """
     bridge_types = ['Culvert', 'Bridge'] # in doubt over: CrossRoad, RailRoadCrossing
 
-    # For model_type, we need the following types: source, sink, sourcesink, bridge, link
     for i in bridge_types:
         df_roadN1.loc[df_roadN1['type'].str.contains(i), 'type'] = 'bridge'
 
-    df_roadN1.loc[~df_roadN1['type'].str.contains('bridge'), 'type'] = 'link'
+    for i in df_roadN1.type:
+        df_roadN1.loc[~df_roadN1['type'].str.contains('bridge'), 'type'] = 'road'
 
-    df_roadN1['type'].iloc[0] = 'source'
-    df_roadN1['type'].iloc[-1] = 'sink'
+        df_roadN1['type'].iloc[0] = 'source'
+        df_roadN1['type'].iloc[-1] = 'sink'
 
-    df_roadN1.rename(columns={'type': 'model_type'}, inplace=True)
+        df_roadN1.rename(columns={'type': 'model_type'}, inplace=True)
 
 change_type()
 print(df_roadN1['model_type'])
