@@ -1,18 +1,5 @@
-#from G11_A2_run import df_roads, df_bridges
-
-print(df_roads.head(5))
-
-# Check the column names. Eventually we want the columns: road,id,model_type,name,lat,lon,length + bridge info
-for i in df_roads:
-    print(i)
-
 # Filter on road N1
 df_roadN1 = df_roads[df_roads['road'] == 'N1']
-#df_bridgesN1 = df_bridges[df_bridges['road'] == 'N1']
-
-# Check on which types there are in the N1
-#print(df_roadN1.type.unique())
-#print(df_roadN1.type.nunique())
 
 def change_column_names():
     """
@@ -26,7 +13,6 @@ def change_column_names():
     df_roadN1['condition'] = np.nan
     df_roadN1['road_name'] = 'Unknown'
     df_roadN1['bridge_length'] = np.nan
-
 
 def change_model_type():
     """
@@ -44,10 +30,6 @@ def change_model_type():
     df_roadN1['model_type'].iloc[0] = 'source'
     df_roadN1['model_type'].iloc[-1] = 'sink'
 
-    # Some checks
-    #print(df_roadN1['model_type'])
-    #print(df_roadN1.model_type.unique())
-
 def standardize_bridges():
     """
     Since some bridges have >1 LRPs, we only model for every bridge one delay,
@@ -55,17 +37,17 @@ def standardize_bridges():
     So we change them to 'link'
     """
     # Drop bridge end from the roads file
-    duplicate_types = ['BE']
-
     df_roadN1.loc[df_roadN1['gap'].str.contains('BE', na=False), 'model_type'] = 'link'
     df_roadN1.loc[df_roadN1['gap'].str.contains('BE', na=False), 'condition'] = ''
-    '''
-    one_way_roads = ['(R']
 
-    df_bridgesN1.drop(df_bridgesN1[df_bridgesN1['name'].str.contains('(R)')].index, inplace=True)
-    df_bridgesN1.drop(df_bridgesN1[df_bridgesN1['name'].str.contains('(Right)')].index, inplace=True)
-    print(df_bridgesN1.head())
-    #df_bridgesN1 = df_bridgesN1.loc[~df_bridgesN1['name'].str.contains('(R)')]
+    '''
+    A beginning to only keep one side of the road for connecting it to the bridges. We did not proceed with this.
+    The differences are little, and now the first match is used. Sometimes where was no distincion between left and right
+    There were also a lot of inconsistencies. The code does NOT work yet. 
+    
+    one_way_roads = ['(R)', 'Right', 'right', 'Right']
+    for i in one_way_roads:
+        df_bridgesN1.drop(df_bridgesN1[df_bridgesN1['name'].str.contains(i)].index, inplace=True)
     '''
 
 def connect_infra():
@@ -132,7 +114,7 @@ def make_id():
 
 def make_figure():
     # make a figure of N1
-    sns.lmplot(x='lon', y='lat', data=df_roadN1, hue='model_type', fit_reg=False, scatter_kws={"s": 10})
+    sns.lmplot(x='lon', y='lat', data=df_roadN1, hue='model_type', fit_reg=False, scatter_kws={"s": 1})
     #df_roadN1.plot(x='lon', y='lat', linestyle="",marker="o",legend=False, markersize='0.5')
     #df_roadN1_bridges.plot(x='lon', y='lat', linestyle="",marker="o",legend=False, markersize='0.5', color='orange')
     plt.show()
@@ -145,9 +127,9 @@ def prepare_data():
     # Delete sideroads? and crossroads?
     get_length()
     get_name()
-    get_road_name() # is nothing yet, in the components file there is this mentioned
+    #get_road_name() # is nothing yet, in the components file there is this mentioned
     make_id()
-    make_figure()
+    #make_figure()
 
 prepare_data()
 
