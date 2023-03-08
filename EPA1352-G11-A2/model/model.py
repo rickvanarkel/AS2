@@ -4,6 +4,7 @@ from mesa.space import ContinuousSpace
 from components import Source, Sink, SourceSink, Bridge, Link
 import pandas as pd
 from collections import defaultdict
+import random
 
 
 # ---------------------------------------------------------------
@@ -73,8 +74,8 @@ class BangladeshModel(Model):
         Warning: the labels are the same as the csv column labels
         """
 
-        #df = pd.read_csv('../data/demo-1.csv')
-        df = pd.read_csv('../data/demo_N1_compact.csv')
+        df = pd.read_csv('../data/demo-1.csv')
+        #df = pd.read_csv('../data/demo_N1_compact.csv')
 
         # a list of names of roads to be generated
         roads = ['N1']
@@ -83,6 +84,11 @@ class BangladeshModel(Model):
         #     'N1', 'N2', 'N3', 'N4',
         #     'N5', 'N6', 'N7', 'N8'
         # ]
+
+        """
+        <Uitleg>
+        """
+
         self.scenario = 8
         self.scenario_dict = {
             1: {'A': 0, 'B': 0, 'C': 0, 'D': 5},
@@ -147,14 +153,19 @@ class BangladeshModel(Model):
                     agent = SourceSink(row['id'], self, row['length'], row['name'], row['road'])
                     self.sources.append(agent.unique_id)
                     self.sinks.append(agent.unique_id)
+
                 elif model_type == 'bridge':
-                    try:
-                        x = self.scenario_dict[self.scenario]
-                        b = x[row['condition']]
-                        print(b)
-                    except:
-                        pass
-                    agent = Bridge(row['id'], self, row['length'], row['name'], row['road'])
+                    """
+                    <Uitleg>
+                    """
+                    runscenario_dict = self.scenario_dict[self.scenario]
+                    cat_probability = runscenario_dict[row['condition']]
+                    if random.randint(0, 100) > cat_probability:
+                        state = 'intact'
+                    else:
+                        state = 'broken'
+                    agent = Bridge(row['id'], self, row['length'], row['name'], row['road'], state)
+
                 elif model_type == 'link':
                     agent = Link(row['id'], self, row['length'], row['name'], row['road'])
 
