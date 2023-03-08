@@ -31,5 +31,5 @@ for i in range(9):
         df_list.loc[k] = [average_time]
         Source.truck_counter = 0
 
-    df_list.to_csv(f'scenario{i}.csv')
+    df_list.to_csv(f'LBscenario{i}.csv')
 
