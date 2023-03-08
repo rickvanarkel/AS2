@@ -65,6 +65,9 @@ class BangladeshModel(Model):
         self.sources = []
         self.sinks = []
 
+        global truck_counter
+        truck_counter = 0
+
         self.reporter = pd.DataFrame(columns=["Name", "Time"])
         self.reporter.set_index("Name", inplace=True)
         self.scenario = scenario
@@ -94,6 +97,7 @@ class BangladeshModel(Model):
         """
 
         self.scenario_dict = {
+            0: {'A': 0, 'B': 0, 'C': 0, 'D': 0},
             1: {'A': 0, 'B': 0, 'C': 0, 'D': 5},
             2: {'A': 0, 'B': 0, 'C': 0, 'D': 10},
             3: {'A': 0, 'B': 0, 'C': 0, 'D': 15},
@@ -149,6 +153,7 @@ class BangladeshModel(Model):
                 if model_type == 'source':
                     agent = Source(row['id'], self, row['length'], row['name'], row['road'])
                     self.sources.append(agent.unique_id)
+                    self.rsource = agent
                 elif model_type == 'sink':
                     agent = Sink(row['id'], self, row['length'], row['name'], row['road'])
                     self.sinks.append(agent.unique_id)
@@ -167,7 +172,7 @@ class BangladeshModel(Model):
                         state = 'intact'
                     else:
                         state = 'broken'
-                    agent = Bridge(row['id'], self, row['length'], row['name'], row['road'], state)
+                    agent = Bridge(row['id'], self, row['bridge_length'], row['name'], row['road'], state)
 
                 elif model_type == 'link':
                     agent = Link(row['id'], self, row['length'], row['name'], row['road'])
