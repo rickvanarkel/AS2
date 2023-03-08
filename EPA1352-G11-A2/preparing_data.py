@@ -15,8 +15,10 @@ for i in all_roads:
 
 And then this file can be adjusted as follows: 
 * the functions below need a road dataframe as input, within ()
-* the export to csv files need to be dynamically named
+* the output dfs (right format) need to be dynamically named 
 * this whole file runs through a for loop, looping over all the unique roads (the list all_roads)
+* after all runs, one big datafile needs to be made where all the roads are put together with the right data for modeling (pd.concat)
+* the file of all the roads needs to be exported to csv for modeling 
 '''
 
 def change_column_names():
