@@ -20,7 +20,7 @@ for i in range(1,4):
     df_list = pd.DataFrame(columns=["run", "avarage"])
     df_list.set_index("run", inplace=True)
 
-    for k in range(2):
+    for k in range(10):
         seed = random.randint(1,1234567)
         sim_model = BangladeshModel(seed=seed, scenario=i)
         # Check if the seed is set

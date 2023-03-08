@@ -25,4 +25,6 @@ df_roads = import_file('./data/_roads3.csv')
 df_bridges = import_file('./data/BMMS_overview.xlsx')
 
 exec(open("preparing_data.py").read())
+exec(open("model_run.py").read())
+
 #execfile('preparing_data.py')
