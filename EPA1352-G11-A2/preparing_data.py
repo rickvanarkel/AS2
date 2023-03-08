@@ -1,6 +1,24 @@
 # Filter on road N1
 df_roadN1 = df_roads[df_roads['road'] == 'N1']
 
+'''
+Conceptualisation for automating this file for multiple roads
+
+# obtain all unique roads
+all_roads = df_roads['road'].unique()
+
+# make a dataframe for each road
+road_dfs = {}
+for i in all_roads:
+    roadname = f'df_road_{i}'
+    road_dfs[roadname] = df_roads[df_roads['road'] == i]
+
+And then this file can be adjusted as follows: 
+* the functions below need a road dataframe as input, within ()
+* the export to csv files need to be dynamically named
+* this whole file runs through a for loop, looping over all the unique roads (the list all_roads)
+'''
+
 def change_column_names():
     """
     The column names are updated and empty columns are generated for the information needed for modeling
