@@ -83,6 +83,17 @@ class BangladeshModel(Model):
         #     'N1', 'N2', 'N3', 'N4',
         #     'N5', 'N6', 'N7', 'N8'
         # ]
+        self.scenario = 8
+        self.scenario_dict = {
+            1: {'A': 0, 'B': 0, 'C': 0, 'D': 5},
+            2: {'A': 0, 'B': 0, 'C': 0, 'D': 10},
+            3: {'A': 0, 'B': 0, 'C': 0, 'D': 15},
+            4: {'A': 0, 'B': 0, 'C': 10, 'D': 20},
+            5: {'A': 0, 'B': 5, 'C': 10, 'D': 20},
+            6: {'A': 0, 'B': 10, 'C': 20, 'D': 40},
+            7: {'A': 5, 'B': 10, 'C': 20, 'D': 40},
+            8: {'A': 10, 'B': 20, 'C': 40, 'D': 80},
+        }
 
         df_objects_all = []
         for road in roads:
@@ -137,6 +148,12 @@ class BangladeshModel(Model):
                     self.sources.append(agent.unique_id)
                     self.sinks.append(agent.unique_id)
                 elif model_type == 'bridge':
+                    try:
+                        x = self.scenario_dict[self.scenario]
+                        b = x[row['condition']]
+                        print(b)
+                    except:
+                        pass
                     agent = Bridge(row['id'], self, row['length'], row['name'], row['road'])
                 elif model_type == 'link':
                     agent = Link(row['id'], self, row['length'], row['name'], row['road'])

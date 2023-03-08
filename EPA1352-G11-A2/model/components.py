@@ -1,5 +1,6 @@
 from mesa import Agent
 from enum import Enum
+import random
 
 
 # ---------------------------------------------------------------
@@ -49,20 +50,30 @@ class Bridge(Infra):
     ...
 
     """
-
     def __init__(self, unique_id, model, length=0,
                  name='Unknown', road_name='Unknown', condition='Unknown'):
+
         super().__init__(unique_id, model, length, name, road_name)
 
         self.condition = condition
+        self.delay_time = self.get_delay_time(length)
 
-        # TODO
-        self.delay_time = self.random.randrange(0, 10)
-        # print(self.delay_time)
 
-    # TODO
-    def get_delay_time(self):
-        return self.delay_time
+
+    def get_delay_time(self, length):
+
+        delay_time = 0
+
+        if length < 10:
+            delay_time = random.uniform(10, 20)
+        elif 10 < self.length < 50:
+            delay_time = random.uniform(15, 60)
+        elif 50 < self.length < 200:
+            delay_time = random.uniform(45, 90)
+        elif self.length > 200:
+            delay_time = random.triangular(60, 120, 240)
+
+        return delay_time
 
 
 # ---------------------------------------------------------------
@@ -191,8 +202,8 @@ class Vehicle(Agent):
 
     """
 
-    # 50 km/h translated into meter per min
-    speed = 50 * 1000 / 60
+    # 48 km/h translated into meter per min
+    speed = 48 * 1000 / 60
     # One tick represents 1 minute
     step_time = 1
 
