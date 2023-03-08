@@ -51,19 +51,20 @@ def standardize_bridges():
         df_bridgesN1.drop(df_bridgesN1[df_bridgesN1['name'].str.contains(i)].index, inplace=True)
     '''
 
-def connect_infra():
-    """
-    This function connects the bridges df with the road df, to obtain information about bridge condition and length
-    """
+def make_infra_id():
     # Make bridge_id and road_id based on road and LRP
     df_roadN1['road_id'] = df_roadN1['road'] + df_roadN1['lrp']
     df_bridges['bridge_id'] = df_bridges['road'] + df_bridges['LRPName']
 
+def connect_infra(bridges_file):
+    """
+    This function connects the bridges df with the road df, to obtain information about bridge condition and length
+    """
     # find exact match between road+LRP
     for index, row in df_roadN1.iterrows():
         if 'bridge' in row['model_type']:
             road_id = row['road_id'].strip()
-            matching_bridge = df_bridges[df_bridges['bridge_id'].str.contains(road_id)]
+            matching_bridge = bridges_file[bridges_file['bridge_id'].str.contains(road_id)]
             if not matching_bridge.empty:
                 bridge_condition = matching_bridge.iloc[0]['condition']
                 bridge_length = matching_bridge.iloc[0]['length']
@@ -71,9 +72,9 @@ def connect_infra():
                 df_roadN1.at[index, 'bridge_length'] = bridge_length
 
     # Since there are inconsistencies between the two datasets, the procedure is ran again for less exact matches
-    fill_in_infra()
+    fill_in_infra(bridges_file)
 
-def fill_in_infra():
+def fill_in_infra(bridges_file):
     """
     This function connects the bridges df with the road df, to obtain information about bridge condition and length
     This is done making a less exact match due to inconsistencies between the roads and bridges data
@@ -85,7 +86,7 @@ def fill_in_infra():
     for index, row in df_roadN1.loc[df_roadN1['condition'].isna()].iterrows():
         if 'bridge' in row['model_type']:
             road_id = row['road_id_sliced']
-            matching_bridge = df_bridges[df_bridges['bridge_id'].str.contains(road_id)]
+            matching_bridge = bridges_file[bridges_file['bridge_id'].str.contains(road_id)]
             if not matching_bridge.empty:
                 bridge_condition = matching_bridge.iloc[0]['condition']
                 bridge_length = matching_bridge.iloc[0]['length']
@@ -132,9 +133,10 @@ def prepare_data():
     Runs all procedures to obtain the right columns and information for modeling
     '''
     change_column_names()
+    make_infra_id()
     change_model_type()
     standardize_bridges()
-    connect_infra() # also calls for fill_in_infra() within the function, do we want that?
+    connect_infra(df_bridges) # also calls for fill_in_infra() within the function, do we want that?
     # Delete sideroads? and crossroads?
     get_length()
     get_name()
@@ -146,11 +148,37 @@ def prepare_data():
 prepare_data()
 
 # Write the dataframe to csv
-df_roadN1.to_excel('check_N1_df.xlsx')
-df_roadN1.to_csv('./data/demo_N1.csv')
+df_roadN1.to_excel('check_N1_df_LB.xlsx')
+df_roadN1.to_csv('./data/demo_N1_LB.csv')
 
 # Make compact datafile and export to csv
 model_columns = ['road', 'id', 'model_type', 'name', 'lat', 'lon', 'length', 'condition'] # 'road_name'
 df_N1_compact = df_roadN1.loc[:, model_columns]
 
-df_N1_compact.to_csv('./data/demo_N1_compact.csv')
+df_N1_compact.to_csv('./data/demo_N1_compact_LB.csv')
+
+df_bridgesN1 = df_bridges[df_bridges['road'] == 'N1']
+
+#sns.lmplot(x='lon', y='lat', data=df_bridgesN1, fit_reg=False, scatter_kws={"s": 1})
+#plt.show()
+
+def make_upperbound():
+    df_bridges_sorted = df_bridges.sort_values(by='condition', ascending=False)
+
+    connect_infra(df_bridges_sorted)
+    df_roadN1.to_excel('check_N1_df_UB.xlsx')
+    df_roadN1.to_csv('./data/demo_N1_UB.csv')
+
+    df_N1_compact = df_roadN1.loc[:, model_columns]
+    df_N1_compact.to_csv('./data/demo_N1_compact_UB.csv')
+
+make_upperbound()
+
+def validate_bridges():
+    df_BMMS_LB = df_bridges.drop_duplicates(subset='bridge_id', keep='first')
+    df_BMMS_UB = df_bridges.drop_duplicates(subset='bridge_id', keep='last')
+
+    df_BMMS_LB.to_excel('BMMS_LB.xlsx')
+    df_BMMS_UB.to_excel('BMMS_UB.xlsx')
+
+validate_bridges()
