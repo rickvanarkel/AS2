@@ -39,8 +39,6 @@ def standardize_bridges():
     df_roadN1.loc[df_roadN1['gap'].str.contains('BE', na=False), 'model_type'] = 'link'
     df_roadN1.loc[df_roadN1['gap'].str.contains('BE', na=False), 'condition'] = np.nan
 
-    # ALSO REMOVE LENGTH IF GAP IS BE??????
-
     '''
     A beginning to only keep one side of the road for connecting it to the bridges. We did not proceed with this.
     The differences are little, and now the first match is used. Sometimes where was no distincion between left and right
@@ -93,6 +91,15 @@ def fill_in_infra(bridges_file):
                 df_roadN1.at[index, 'condition'] = bridge_condition
                 df_roadN1.at[index, 'bridge_length'] = bridge_length
 
+def bridge_to_link():
+    '''
+    If no match is found between the id's of the bridges and roads, the model type is set to link for modeling purposes.
+    '''
+    for index, row in df_roadN1.loc[df_roadN1['condition'].isna()].iterrows():
+        if 'bridge' in row['model_type']:
+            df_roadN1.loc[index, 'model_type'] = 'link'
+            df_roadN1.loc[index, 'name'] = 'link'
+
 def get_length():
     '''
     Fills in the length of each road part based on the chainage
@@ -136,13 +143,13 @@ def prepare_data():
     make_infra_id()
     change_model_type()
     standardize_bridges()
-    connect_infra(df_bridges) # also calls for fill_in_infra() within the function, do we want that?
-    # Delete sideroads? and crossroads?
+    connect_infra(df_bridges) # also calls for fill_in_infra() within the function
+    bridge_to_link()
     get_length()
     get_name()
     get_road_name()
     make_id()
-    #make_figure()
+    make_figure()
 
 # Run the prepare data function
 prepare_data()
@@ -156,11 +163,6 @@ model_columns = ['road', 'id', 'model_type', 'name', 'lat', 'lon', 'length', 'co
 df_N1_compact = df_roadN1.loc[:, model_columns]
 
 df_N1_compact.to_csv('./data/demo_N1_compact_LB.csv')
-
-df_bridgesN1 = df_bridges[df_bridges['road'] == 'N1']
-
-#sns.lmplot(x='lon', y='lat', data=df_bridgesN1, fit_reg=False, scatter_kws={"s": 1})
-#plt.show()
 
 def make_upperbound():
     df_bridges_sorted = df_bridges.sort_values(by='condition', ascending=False)
@@ -180,5 +182,10 @@ def validate_bridges():
 
     df_BMMS_LB.to_excel('BMMS_LB.xlsx')
     df_BMMS_UB.to_excel('BMMS_UB.xlsx')
+
+    df_bridgesN1 = df_bridges[df_bridges['road'] == 'N1']
+
+    # sns.lmplot(x='lon', y='lat', data=df_bridgesN1, fit_reg=False, scatter_kws={"s": 1})
+    # plt.show()
 
 validate_bridges()
