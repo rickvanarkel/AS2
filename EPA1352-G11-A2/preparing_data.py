@@ -5,7 +5,6 @@ def change_column_names():
     """
     The column names are updated and empty columns are generated for the information needed for modeling
     """
-    #df_roadN1.rename(columns={'type': 'model_type'}, inplace=True)
     df_roadN1['model_type'] = ''
     df_roadN1['length'] = np.nan
     df_roadN1['id'] = ''
