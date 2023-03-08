@@ -153,32 +153,42 @@ def prepare_data():
     make_id()
     make_figure()
 
-# Run the prepare data function
-prepare_data()
-
-# Write the dataframe to csv
-df_roadN1.to_excel('check_N1_df_LB.xlsx')
-df_roadN1.to_csv('./data/demo_N1_LB.csv')
-
-# Make compact datafile and export to csv
 model_columns = ['road', 'id', 'model_type', 'name', 'lat', 'lon', 'length', 'condition', 'bridge_length'] # 'road_name'
-df_N1_compact = df_roadN1.loc[:, model_columns]
+def save_data():
+    '''
+    Saves the files
+    '''
+    # Write the dataframe to csv
+    df_roadN1.to_csv('./data/demo_N1_LB.csv')
 
-df_N1_compact.to_csv('./data/demo_N1_compact_LB.csv')
+    # Make compact datafile and export to csv
+    df_N1_compact = df_roadN1.loc[:, model_columns]
+    df_N1_compact.to_csv('./data/demo_N1_compact_LB.csv')
 
 def make_upperbound():
+    '''
+    Sorts the bridges df by the highest condition, and makes a new match between the bridges and roads.
+    '''
+    # sort the bridges file by highest condition
     df_bridges_sorted = df_bridges.sort_values(by='condition', ascending=False)
 
+    # refill the column by connecting the two infra files
     connect_infra(df_bridges_sorted)
-    df_roadN1.to_excel('check_N1_df_UB.xlsx')
-    df_roadN1.to_csv('./data/demo_N1_UB.csv')
 
+    # save the files
+    df_roadN1.to_csv('./data/demo_N1_UB.csv')
     df_N1_compact = df_roadN1.loc[:, model_columns]
     df_N1_compact.to_csv('./data/demo_N1_compact_UB.csv')
 
+# Run the prepare data function
+prepare_data()
+save_data()
 make_upperbound()
 
 def validate_bridges():
+    '''
+    Generates dataframes to check the statistics of the BMMS file with the two different sorting methods
+    '''
     df_BMMS_LB = df_bridges.drop_duplicates(subset='bridge_id', keep='first')
     df_BMMS_UB = df_bridges.drop_duplicates(subset='bridge_id', keep='last')
 
@@ -189,5 +199,3 @@ def validate_bridges():
 
     # sns.lmplot(x='lon', y='lat', data=df_bridgesN1, fit_reg=False, scatter_kws={"s": 1})
     # plt.show()
-
-validate_bridges()
