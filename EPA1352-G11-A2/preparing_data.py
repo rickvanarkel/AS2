@@ -76,6 +76,7 @@ def fill_in_infra(bridges_file):
     """
     This function connects the bridges df with the road df, to obtain information about bridge condition and length
     This is done making a less exact match due to inconsistencies between the roads and bridges data
+    Iterates only over the columns with model type bridges and empty condition (NaN)
     """
     # Slice the road_id to obtain an eight number value, without the extension a-z
     df_roadN1['road_id_sliced'] = df_roadN1['road_id'].str.slice(stop=8)
@@ -93,7 +94,8 @@ def fill_in_infra(bridges_file):
 
 def bridge_to_link():
     '''
-    If no match is found between the id's of the bridges and roads, the model type is set to link for modeling purposes.
+    If no match is found between the id's of the bridges and roads,
+    the model type of these bridges is set to link for modeling purposes.
     '''
     for index, row in df_roadN1.loc[df_roadN1['condition'].isna()].iterrows():
         if 'bridge' in row['model_type']:
@@ -159,7 +161,7 @@ df_roadN1.to_excel('check_N1_df_LB.xlsx')
 df_roadN1.to_csv('./data/demo_N1_LB.csv')
 
 # Make compact datafile and export to csv
-model_columns = ['road', 'id', 'model_type', 'name', 'lat', 'lon', 'length', 'condition'] # 'road_name'
+model_columns = ['road', 'id', 'model_type', 'name', 'lat', 'lon', 'length', 'condition', 'bridge_length'] # 'road_name'
 df_N1_compact = df_roadN1.loc[:, model_columns]
 
 df_N1_compact.to_csv('./data/demo_N1_compact_LB.csv')
