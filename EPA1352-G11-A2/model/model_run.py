@@ -1,3 +1,6 @@
+import pandas as pd
+import random
+
 from model import BangladeshModel
 
 """
@@ -7,19 +10,29 @@ from model import BangladeshModel
 
 # ---------------------------------------------------------------
 
-# run time 5 x 24 hours; 1 tick 1 minute
-# run_length = 5 * 24 * 60
+run_length = 5 * 24 * 60
 
-# run time 1000 ticks
-run_length = 1000
+df_list = pd.DataFrame(columns=["run", "avarage"])
+df_list.set_index("run", inplace=True)
 
-seed = 1234567
+for i in range(1,4):
 
-sim_model = BangladeshModel(seed=seed)
+    df_list = pd.DataFrame(columns=["run", "avarage"])
+    df_list.set_index("run", inplace=True)
 
-# Check if the seed is set
-print("SEED " + str(sim_model._seed))
+    for k in range(2):
+        seed = random.randint(1,1234567)
+        sim_model = BangladeshModel(seed=seed, scenario=i)
+        # Check if the seed is set
+        print("SEED " + str(sim_model._seed))
 
-# One run with given steps
-for i in range(run_length):
-    sim_model.step()
+        # One run with given steps
+        for j in range(run_length):
+            sim_model.step()
+        average_time = sim_model.reporter['Time'].mean()
+        df_list.loc[k] = [average_time]
+        del(sim_model)
+
+    df_list.to_csv(f'scenario{i}.csv')
+
+

@@ -56,7 +56,7 @@ class BangladeshModel(Model):
 
     step_time = 1
 
-    def __init__(self, seed=None, x_max=500, y_max=500, x_min=0, y_min=0):
+    def __init__(self, seed=None, x_max=500, y_max=500, x_min=0, y_min=0, scenario = 1):
 
         self.schedule = BaseScheduler(self)
         self.running = True
@@ -64,6 +64,10 @@ class BangladeshModel(Model):
         self.space = None
         self.sources = []
         self.sinks = []
+
+        self.reporter = pd.DataFrame(columns=["Name", "Time"])
+        self.reporter.set_index("Name", inplace=True)
+        self.scenario = scenario
 
         self.generate_model()
 
@@ -74,8 +78,8 @@ class BangladeshModel(Model):
         Warning: the labels are the same as the csv column labels
         """
 
-        df = pd.read_csv('../data/demo-1.csv')
-        #df = pd.read_csv('../data/demo_N1_compact.csv')
+        #df = pd.read_csv('../data/demo-1.csv')
+        df = pd.read_csv('../data/demo_N1_compact_UB.csv')
 
         # a list of names of roads to be generated
         roads = ['N1']
@@ -89,7 +93,6 @@ class BangladeshModel(Model):
         <Uitleg>
         """
 
-        self.scenario = 8
         self.scenario_dict = {
             1: {'A': 0, 'B': 0, 'C': 0, 'D': 5},
             2: {'A': 0, 'B': 0, 'C': 0, 'D': 10},
