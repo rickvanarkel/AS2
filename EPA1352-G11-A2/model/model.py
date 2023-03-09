@@ -70,15 +70,21 @@ class BangladeshModel(Model):
 
         self.reporter = pd.DataFrame(columns=["Name", "Time"])
         self.reporter.set_index("Name", inplace=True)
+
+        '''
+        Creates a parameter for setting the scenario number!
+        '''
         self.scenario = scenario
 
         self.generate_model()
 
     def generate_model(self):
         """
-        generate the simulation model according to the csv file component information
-
+        Generate the simulation model according to the csv file component information
         Warning: the labels are the same as the csv column labels
+
+        To change the file used in the DF uncomment the UB and comment de LB. These files
+        provide the different datasets for the lower and upper bound.
         """
 
         df = pd.read_csv('data/demo_N1_compact_LB.csv')
@@ -93,9 +99,10 @@ class BangladeshModel(Model):
         # ]
 
         """
-        <Uitleg>
+        self.scenario_dict creates a dictionary containing dictionaries for all 
+        the different scenario's this way we can easily and efficiently select 
+        which parameters for the bridge quality should be used. 
         """
-
         self.scenario_dict = {
             0: {'A': 0, 'B': 0, 'C': 0, 'D': 0},
             1: {'A': 0, 'B': 0, 'C': 0, 'D': 5},
@@ -161,11 +168,13 @@ class BangladeshModel(Model):
                     agent = SourceSink(row['id'], self, row['length'], row['name'], row['road'])
                     self.sources.append(agent.unique_id)
                     self.sinks.append(agent.unique_id)
-
                 elif model_type == 'bridge':
-                    """
-                    <Uitleg>
-                    """
+                    '''
+                    This part makes sure that bridge are created based on the data set. Each run has a
+                    certain scenario, and each bridge has a condition. This results in a certain chance
+                    of the bridge collapsing and causing a delay. The state on the bridge (either intact or broken)
+                    is added as an attribute to the bridge.
+                    '''
                     runscenario_dict = self.scenario_dict[self.scenario]
                     cat_probability = runscenario_dict[row['condition']]
                     if random.randint(0, 100) > cat_probability:
@@ -176,7 +185,6 @@ class BangladeshModel(Model):
 
                 elif model_type == 'link':
                     agent = Link(row['id'], self, row['length'], row['name'], row['road'])
-
                 if agent:
                     self.schedule.add(agent)
                     y = row['lat']

@@ -6,7 +6,7 @@ import numpy as np
 warnings.filterwarnings('ignore')
 
 '''
-This file is the main run file of our model
+This file is the main run file!
 '''
 
 def import_file(filepath):
@@ -22,6 +22,9 @@ def import_file(filepath):
         dataframe = pd.read_excel(filepath)
     return dataframe
 
+'''
+Uses the import_file function to import the relevant files for datacleaning
+'''
 df_roads = import_file('./data/_roads3.csv')
 df_bridges = import_file('./data/BMMS_overview.xlsx')
 

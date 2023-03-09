@@ -38,22 +38,26 @@ class Infra(Agent):
 # ---------------------------------------------------------------
 class Bridge(Infra):
     """
-    Creates delay time
-
     Attributes
     __________
-    condition:
-        condition of the bridge
-
     delay_time: int
         the delay (in ticks) caused by this bridge
+
+    state: str
+        contains the state of the bridge, either "broken" or "intact"
+
+    length: int
+        contains the length of the road, with which the delay is calculated
     ...
 
-    """
+    Functions
+    __________
+    get_delay_time:
+        give each bridge a certain delay time
 
     """
-    <Uitleg>
-    """
+
+
     def __init__(self, unique_id, model, length=0,
                  name='Unknown', road_name='Unknown', state='intact'):
 
