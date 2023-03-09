@@ -82,7 +82,7 @@ class BangladeshModel(Model):
         """
 
         #df = pd.read_csv('../data/demo-1.csv')
-        df = pd.read_csv('../data/demo_N1_compact_UB.csv')
+        df = pd.read_csv('../data/demo_N1_compact_LB.csv')
 
         # a list of names of roads to be generated
         roads = ['N1']
