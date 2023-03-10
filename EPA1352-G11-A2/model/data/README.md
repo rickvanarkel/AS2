@@ -1,17 +1,19 @@
-# Data for Model Generation of Simple Transport Model Demo in MESA
+# Data description for Model Generation in MESA
 
-Created by: 
-Yilin HUANG 
+Created by: EPA1352 Group 11*
 
-Email:
-y.huang@tudelft.nl
-
-Version:
-1.0
+|      Name      | Student Number |
+|:--------------:|:---------------|
+| Rick van Arkel | 4974859        | 
+|  Laura Drost   | 5066034        |
+|   Inge Faber   | 4457617        |
+| Daan de Jager  | 4702972        |
+| Susan Ruinaard | 4650441        |
 
 ## Introduction
 
-The simple transport model demo, see [../model/model.py](../model.py) for EPA1352 Advanced Simulation course Assignment 2, takes a `csv` input data file that specifies the infrastructure model components to be generated. The data format used **by the demo model** is described here. 
+This README gives a short overview to the data used in the model. The original data is provided by the course EPA1352 Advanced Simulation course Assignment 2.
+The file [preparing_data.py] takes an `csv` and 'xlxs' input data file and specifies the infrastructure model components to be generated. The data format used is described here. 
 
 ## Format
 
@@ -25,12 +27,11 @@ The simple transport model demo, see [../model/model.py](../model.py) for EPA135
 | lon       | Longitude in Decimal Degrees |
 | length    | Length of the object in meters |
 
-The column `road` is used by the model generation to classify model components by roads, i.e., on which road does a component belong to. The model generation assumes that the infrastructure model components of the same road is ordered sequentially. This means, e.g. in `demo-1.csv`, component `100000` is connected to component `100001`, that is connected to component `100002`, that is connected to component `100003`, etc., all of which are on road `N1`. 
+The column `road` is used by the model generation to classify model components by roads, i.e., on which road does a component belong to. The model generation assumes that the infrastructure model components of the same road is ordered sequentially. This means component `100000` is connected to component `100001`, that is connected to component `100002`, that is connected to component `100003`, etc., all of which are on road `N1`. 
 
 The column `model_type` is used by the model generation to identify which class of components to be generated. The `model_type` labels used in this column must be consistent with the labels in the `generate_model` routine. 
 
 The rest of the information is used to instantiate the components (objects). 
+  
 
-You may change the data format and structure if the model generation (`generate_model`) routine is adapted accordingly. 
-
-All data files contained in this directory are used as demonstration for model generation. They are not based on real data. 
+(*The basis are constructed by the course author)

@@ -1,32 +1,31 @@
 # Simple Transport Model Demo in MESA
 
-Created by: 
-Yilin HUANG 
+Created by: EPA1352 Group 11* 
 
-Email:
-y.huang@tudelft.nl
-
-Version:
-1.0
-
+|      Name      | Student Number |
+|:--------------:|:---------------|
+| Rick van Arkel | 4974859        | 
+|  Laura Drost   | 5066034        |
+|   Inge Faber   | 4457617        |
+| Daan de Jager  | 4702972        |
+| Susan Ruinaard | 4650441        |
 ## Introduction
 
-A simple transport model demo in MESA for EPA1352 Advanced Simulation course Assignment 2. 
+This model is build to analyze the infrastructure in Bangladesh. The aim of the model itself is to simulate trucks traveling along the infrastructure network of Bangladesh. Subsequently, the navigability of these roads can be tested. This model focuses on the N1 road. In the simulation a truck starts driving the N1 every 5 minutes with an average speed of 48 km/h. When it crosses a bridge the truck can be delayed with a certain possiblity and time that is varied by the scenarios, the bridge length and the bridge conditions. Every run simulates 5 times 24 hours. After each run an csv file is given as output containing the average time in minutes it took trucks to drive the N1.  
+ 
 
 ## How to Use
 
-* Launch the simulation model with visualization
+* Launch the simulation model 
 ```
-    $ python model_viz.py
+    $ python G11_A2_run.py
 ```
 
-* Launch the simulation model without visualization
-```
-    $ python model_run.py
-```
+For further use of the models, please refer to the function descriptions on how to change scenarios and input files. 
 
 ## Files
-
+* [G11_A2_run.py](.../G11_A2_run.py): Contains a model to read the orginial data and execute `preparing_data.py` and `model_run.py`
+* [preparing_data.py](.../preparing_data.py): Contains the model to prepare the data, thus merges the files _road.csv and BMMS_overview.xlxs. The models output is a file containing the components needed for the `components.py`
 * [model.py](../model.py): Contains the model `BangladeshModel` which is a subclass of Mesa `Model`. It reads a `csv` file with specific format for (transport) model generation. (See the README in the `data` directory for data format.) In addition to dynamic behavior, each model component instance (i.e., object) also has geo-location variables, i.e. latitude and longitude in Decimal Degrees (DD). The given bounds of the latitude and longitude of all objects are translated into the bounds of the HTML5 canvas, which is used in case the visualization is launched. 
 
     In this file, you modify the model generation and add your own routines.
@@ -55,3 +54,5 @@ A simple transport model demo in MESA for EPA1352 Advanced Simulation course Ass
   
     Editing this file is NOT recommended for our assignment. 
  
+
+(*The basis are constructed by the course author)

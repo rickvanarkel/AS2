@@ -1,6 +1,6 @@
-# Example README File
+# Overview of the complete roads in Bangladesh MESA model
 
-Created by: EPA1352 Group xx 
+Created by: EPA1352 Group 11*
 
 |      Name      | Student Number |
 |:--------------:|:---------------|
@@ -12,16 +12,23 @@ Created by: EPA1352 Group xx
 
 ## Introduction
 
-Every project should have a README file to help a first-time user understand what it is about and how they might be able to use it. This file is where you (as a group) shall provide the information needed by the TAs to evaluate and grade your work. 
+This model is build to analyze the infrastructure in Bangladesh. The aim of the model itself is to simulate trucks traveling along the infrastructure network of Bangladesh. Subsequently, the navigability of these roads can be tested. This model focuses on the N1 road. In the simulation a truck starts driving the N1 every 5 minutes with an average speed of 48 km/h. When it crosses a bridge the truck can be delayed with a certain possiblity and time that is varied by the scenarios, the bridge length and the bridge conditions. Every run simulates 5 time 24 hours. After each run an csv file is given as output containing the average time in minutes it took trucks to drive the N1.  
 
-If you are looking for information about the Demo model of Assignment 2, navigate to the [model/README.md](model/README.md) in the [model](model) directory. Have **fun** modeling in Python! 
+A description of the model files and the data files, please navigate to the READMEs attached to these (sub)models.
 
 ## How to Use
 
-Include whatever you think is necessary for someone to understand your work. The README file is usually the first file someone will see and open. It doesn't need to explain what might be obvious, but it should point out the most important things for someone looking at your work. For example, how to launch your program, what are the main files, where to find them, etc. 
+* Launch the simulation model 
+```
+    $ python G11_A2_run.py
+```
+    
+For further instruction on how to use the model, please 
 
 ### Format
 
 Most README files for data or software projects are now written in Markdown format, like this document. There are some different flavours, but they are easy to write. See here for more information https://www.markdownguide.org/basic-syntax 
 
 Most IDEs can render Markdown files directly. 
+
+(*The basis are constructed by the course author)
