@@ -9,10 +9,14 @@ Created by: EPA1352 Group 11*
 |   Inge Faber   | 4457617        |
 | Daan de Jager  | 4702972        |
 | Susan Ruinaard | 4650441        |
+
+Date: 10-03-2023
+
 ## Introduction
 
 This model is build to analyze the infrastructure in Bangladesh. The aim of the model itself is to simulate trucks traveling along the infrastructure network of Bangladesh. Subsequently, the navigability of these roads can be tested. This model focuses on the N1 road. In the simulation a truck starts driving the N1 every 5 minutes with an average speed of 48 km/h. When it crosses a bridge the truck can be delayed with a certain possiblity and time that is varied by the scenarios, the bridge length and the bridge conditions. Every run simulates 5 times 24 hours. After each run an csv file is given as output containing the average time in minutes it took trucks to drive the N1.  
  
+
 
 ## How to Use
 
